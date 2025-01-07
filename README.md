@@ -25,10 +25,9 @@ This project was developed as part of a university course on Database Systems (C
 
 ## How to Use
 1. Clone this repository:
-   ```bash
    git clone https://github.com/ridham5/Clothing-Retail-Store-DBMS.git
    cd Clothing-Retail-Store-DBMS
-2. Import the database:
+3. Import the database:
    Execute Database/schema.sql and Database/seed_data.sql in your Oracle database.
-3. Set up Oracle APEX:
+4. Set up Oracle APEX:
    Use the file APEX/application_export.sql to import the application into Oracle APEX
