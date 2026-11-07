@@ -15,7 +15,7 @@ SELECT s.Supplier_ID,
        s.First_Name || ' ' || s.Last_Name AS Supplier_Name,
        p.Product_Category,
        COUNT(p.Product_ID) AS Product_Count,
-       SUM(TO_NUMBER(p.Stock_Quantity)) AS Total_Stock
+       SUM(p.Stock_Quantity) AS Total_Stock
 FROM Supplier s
 JOIN Product p ON s.Supplier_ID = p.Supplier_ID
 GROUP BY s.Supplier_ID, s.First_Name, s.Last_Name, p.Product_Category;
@@ -31,18 +31,15 @@ FROM Employee e
 JOIN Sale s ON e.Employee_ID = s.Employee_ID
 GROUP BY e.Employee_ID, e.FirstName, e.LastName, e.JobRole;
 
--- Query to calculate average product price
-SELECT Product_ID, AVG(TO_NUMBER(Product_Price)) AS Average_Product_Price
+-- Query to calculate average product price per category
+SELECT Product_Category, ROUND(AVG(Product_Price), 2) AS Average_Product_Price
 FROM Product
-GROUP BY Product_ID;
+GROUP BY Product_Category;
 
 -- Query to find unsupplied products
 SELECT Product_ID, Product_Name
 FROM Product
-MINUS
-SELECT Product_ID, Product_Name
-FROM Product
-WHERE Supplier_ID IS NOT NULL;
+WHERE Supplier_ID IS NULL;
 
 -- Query to find suppliers providing multiple product categories
 SELECT s.Supplier_ID,
@@ -52,5 +49,3 @@ FROM Supplier s
 JOIN Product p ON s.Supplier_ID = p.Supplier_ID
 GROUP BY s.Supplier_ID, s.First_Name, s.Last_Name
 HAVING COUNT(DISTINCT p.Product_Category) > 1;
-
-

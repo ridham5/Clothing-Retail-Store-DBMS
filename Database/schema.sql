@@ -1,3 +1,5 @@
+-- Clothing Retail Store DBMS: tables in dependency order (Oracle)
+
 CREATE TABLE Address(
     Address_ID NUMBER PRIMARY KEY,
     Country_Name VARCHAR2(50) NOT NULL,
@@ -16,6 +18,16 @@ CREATE TABLE Customer (
     Date_of_Birth DATE,
     Address_ID NUMBER DEFAULT 1,
     FOREIGN KEY (Address_ID) REFERENCES Address(Address_ID)
+);
+
+CREATE TABLE Employee (
+    Employee_ID INT PRIMARY KEY,
+    FirstName VARCHAR2(50) NOT NULL,
+    LastName VARCHAR2(50) NOT NULL,
+    Salary DECIMAL(10, 2),
+    PhoneNumber VARCHAR2(15),
+    JobRole VARCHAR2(50),
+    EmailAddress VARCHAR2(100) UNIQUE
 );
 
 CREATE TABLE Sale (
@@ -43,22 +55,13 @@ CREATE TABLE Product (
     Product_ID NUMBER PRIMARY KEY,
     Product_Name VARCHAR2(50) NOT NULL,
     Product_Size VARCHAR2(25) NOT NULL,
-    Product_Price VARCHAR2(5) NOT NULL,
-    Stock_Quantity VARCHAR2(15) NOT NULL,
+    Product_Price NUMBER(8, 2) NOT NULL CHECK (Product_Price >= 0),
+    Stock_Quantity NUMBER NOT NULL CHECK (Stock_Quantity >= 0),
     Product_Category VARCHAR2(15) NOT NULL,
     Supplier_ID NUMBER,
     FOREIGN KEY (Supplier_ID) REFERENCES Supplier(Supplier_ID)
 );
 
-CREATE TABLE Employee (
-    Employee_ID INT PRIMARY KEY,
-    FirstName VARCHAR2(50) NOT NULL,
-    LastName VARCHAR2(50) NOT NULL,
-    Salary DECIMAL(10, 2),
-    PhoneNumber VARCHAR2(15),
-    JobRole VARCHAR2(50),
-    EmailAddress VARCHAR2(100) UNIQUE
-);
 
 CREATE TABLE Promotion (
     PromoCod INT PRIMARY KEY,
@@ -67,4 +70,3 @@ CREATE TABLE Promotion (
     PromotionPercent DECIMAL(5, 2),
     PromotionAmount DECIMAL(10, 2)
 );
-

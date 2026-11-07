@@ -1,33 +1,76 @@
-# Clothing Retail Store DBMS Project
+# Clothing Retail Store DBMS
 
-## Introduction
-This project is a Database Management System (DBMS) designed to streamline the operations of a clothing retail store. It aims to optimize inventory management, enhance customer satisfaction, and improve operational efficiency by managing key business processes such as sales, inventory, and customer data.
+An Oracle database for a clothing retail store: inventory, suppliers, customers, sales,
+employees and promotions, with SQL views for reporting and an Oracle APEX front end.
 
-## Project Objectives
-The main objectives of this project are:
-- To build a robust and scalable database that supports the operations of a clothing retail store.
-- To demonstrate the use of advanced database design principles, normalization techniques, and SQL queries.
-- To create a user-friendly interface for managing the database using Oracle APEX.
+Built by a 3-person team for CPS510 (Database Systems) at Toronto Metropolitan University, Fall 2024.
 
-## Key Features
-- **Inventory Management**: Track product details, stock levels, and suppliers.
-- **Sales Management**: Record transactions and payment methods.
-- **Customer Management**: Maintain customer profiles and purchase histories.
-- **Employee Management**: Store employee details, roles, and performance metrics.
-- **Promotions Management**: Handle store promotions with discounts and expiry dates.
-- **Advanced SQL Queries**: Analyze data through views and advanced queries.
+## What's inside
 
-## ER Model and Schema Design
-The database is designed with normalization to ensure data consistency and eliminate redundancy. The ER model connects key entities such as customers, employees, products, suppliers, and transactions. 
+| Folder | Contents |
+| --- | --- |
+| `Database/schema.sql` | 7 tables with primary keys, foreign keys, `NOT NULL`, `UNIQUE` and `CHECK` constraints |
+| `Database/seed_data.sql` | Sample data |
+| `Database/views_and_queries.sql` | Reporting views (customer spend, supplier stock, employee sales) and analysis queries |
+| `APEX/application_export.sql` | Oracle APEX app for managing the data through forms and reports |
+| `Documentation/` | Final report (ER model, normalization to 3NF/BCNF, relational algebra, UNIX shell menu) and user manual |
 
-## Why I Built This Project
-This project was developed as part of a university course on Database Systems (CPS510). It demonstrates my understanding of database design, SQL, and integration with tools like Oracle APEX. The project reflects my ability to manage and execute real-world database applications.
+## ER diagram
 
-## How to Use
-1. Clone this repository:
-   git clone https://github.com/ridham5/Clothing-Retail-Store-DBMS.git
-   cd Clothing-Retail-Store-DBMS
-3. Import the database:
-   Execute Database/schema.sql and Database/seed_data.sql in your Oracle database.
-4. Set up Oracle APEX:
-   Use the file APEX/application_export.sql to import the application into Oracle APEX
+```mermaid
+erDiagram
+    ADDRESS ||--o{ CUSTOMER : "lives at"
+    ADDRESS ||--o{ SUPPLIER : "located at"
+    SUPPLIER ||--o{ PRODUCT : supplies
+    CUSTOMER ||--o{ SALE : makes
+    EMPLOYEE ||--o{ SALE : processes
+
+    CUSTOMER { number Customer_ID PK
+               varchar First_Name
+               varchar Email_Address }
+    SALE     { number Transaction_ID PK
+               date Transaction_Date
+               number Total_Amount
+               number Customer_ID FK
+               number Employee_ID FK }
+    PRODUCT  { number Product_ID PK
+               varchar Product_Name
+               number Product_Price
+               number Stock_Quantity
+               number Supplier_ID FK }
+    SUPPLIER { number Supplier_ID PK
+               varchar First_Name
+               number Address_ID FK }
+    EMPLOYEE { number Employee_ID PK
+               varchar JobRole
+               number Salary }
+    ADDRESS  { number Address_ID PK
+               varchar City_Name
+               varchar Postal_Code }
+    PROMOTION { number PromoCod PK
+                varchar PromoName
+                date ExpiryDate }
+```
+
+## Example views and queries
+
+- **CustomerOrdersView**: transactions and total spent per customer
+- **SupplierProductView**: product count and total stock per supplier and category
+- **EmployeeSalesPerformanceView**: transactions handled and sales total per employee
+- Average price per product category, products with no supplier, suppliers covering multiple categories
+
+## Run it
+
+In Oracle (SQL*Plus, SQL Developer or APEX SQL Workshop), run in this order:
+
+```sql
+@Database/schema.sql
+@Database/seed_data.sql
+@Database/views_and_queries.sql
+```
+
+To use the APEX app, import `APEX/application_export.sql` in **App Builder → Import**.
+
+## Tech
+
+Oracle Database · SQL · PL/SQL views · Oracle APEX · UNIX shell
